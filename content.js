@@ -19,6 +19,17 @@ CSS SELECTORS
 - find("given") -- select given
 - parent() -- select parent directly above
 - parents() -- parents all through chain
+
+ATTRIBUTE SELECTORS
+- ^= begins with
+- $= ends with
+- *= at least one instance of 
+
+INSERT CONTENT
+- before
+- after
+- prepend
+- append
 */
 
 // chrome.runtime.onMessage.addListener(
@@ -31,9 +42,30 @@ CSS SELECTORS
 //     chrome.runtime.sendMessage({"message": "open_new_tab", "url": firstHref});
 //     }
 // );
+var knownIssues = {
+	"assassination-classroom": "ansatsu,-kyoushitsu-assassination-classroom",
+	"attack-on-titan": "attack-titan",
+	"case-closed": "detective-conan",
+	"dgray-man": "d-gray-man",
+	"haikyu": "",
+	"parasyte-the-maxim-": "parasyte-maxim",
+	"reborn": "katekyo-hitman-reborn",
+	"sword-art-online": ""
+};
 
-var animeName = $(".collection-carousel-media-link-current a").attr("href").split("/")[1];
+var animeName = $("meta[property='og:url']").attr("content").split("/")[3];
+
+// var animeName = $(function() {
+// 	name = $(".collection-carousel-media-link-current a").attr("href").split("/")[1];
+// 	if (name.length == 0) {
+// 		name = 
+// 	}
+// };
 var fillerList = $(function() {
+	// set animeName to appropriate animefillerlist name lookup
+	if (animeName in knownIssues) {
+		animeName = knownIssues[animeName];
+	}
 	$.ajax({
 		    async: false,
 		    type: 'GET',
@@ -44,7 +76,17 @@ var fillerList = $(function() {
 });
 
 $(function() {
-	if (animeName.length > 0) {
+	if (fillerList.length > 0) {
+		// episode list page
+		$("a.portrait-element.block-link.titlefix.episode").each(function() {
+			var epNum = $(this).attr("title").split(" ").pop();
+			var epType = $(fillerList).find("#eps-" + epNum + " .Type span").text();
+
+			// insert div and span for filler tag
+			$(this).prepend(getFillerTag(epType));
+		})
+
+		// watch episode page
 		$("img.mug").each(function() {
 			// pop episode numner from carousel image alt attribute
 			// find episode type from animefillerlist
@@ -55,22 +97,14 @@ $(function() {
 				// adjust carousel height for tag
 				$(".collection-carousel").attr("style", "height: 125px");
 				$(".collection-carousel-contents").attr("style", "height: 125px");
-
-				// insert div and span for filler tag
-		    	var fillerTag = "<div class='filler-tag' style='width: 100%; background-color: ";
-				if(epType == "Filler" || epType == "Mostly Filler") {
-					fillerTag += "#A14A40"; // red
-				}
-				else {
-					fillerTag +="#91BD09"; // green
-				}
-				fillerTag +=";'><span style='font-size: 11px; color: white; text-transform: uppercase; text-align: center;'>" + epType + "</span></div>";
-				$(this).before(fillerTag);	
-				}
+			}
+			
+			// insert div and span for filler tag
+			$(this).before(getFillerTag(epType));	
+		});
 			// $.get( "http://www.animefillerlist.com/shows/" + animeName , function(data) {
 			// 	console.log($(data).find("#eps-" + epNum + " .Type span").text() + ", " + epNum);
 			// });
-		});
 		// // INSERTS FILLER TYPE INTO FILLER TAG SPAN -> THIS GOES AFTER SPAN CREATED
 		// if (type.length > 0) {
 		// 	$(".filler-tag span").text(type);
@@ -78,21 +112,21 @@ $(function() {
 	}
 });
 
-function insertFillerTag() {
-	$("img.mug").after(function() {
-		var epNum = $(this).attr("alt").split(" ").pop();
-		var epType = fillerDict[epNum];
-		console.log(epNum + ", " + epType);	
-		
-			var div = "<div class='filler-tag' style='width: 100%; background-color: ";
-			if(epType == "Filler" || epType == "Mostly Filler") {
-				div += "#A14A40"; // red
-			}
-			else {
-				div +="#91BD09"; // green
-			}
-			div +=";'><span style='font-size: 11px; color: white; text-transform: uppercase; text-align: center;'>" + epType + "</span></div>";
-			return div;	
-		
-	});
+function getFillerTag(epType) {
+	var fillerTag;
+	if (epType.length > 0) {
+		fillerTag = "<div class='filler-tag' style='width: 100%; text-align: center; background-color: ";
+		if(epType == "Filler" || epType == "Mostly Filler") {
+			fillerTag += "#A14A40"; // red
+		}
+		else {
+			fillerTag +="#91BD09"; // green
+		}
+		fillerTag +=";'><span style='font-size: 11px; color: white; text-transform: uppercase;'>" + epType + "</span></div>";
+	} 
+	else {
+		fillerTag = "<div class='empty-filler-tag' style='height: 16px;'></div>";
+	}
+
+	return fillerTag;	
 }
