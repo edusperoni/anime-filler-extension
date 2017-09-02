@@ -43,24 +43,23 @@ INSERT CONTENT
 //     }
 // );
 var knownIssues = {
+	"ace-attorney": "",
 	"assassination-classroom": "ansatsu,-kyoushitsu-assassination-classroom",
 	"attack-on-titan": "attack-titan",
+	"berserk": "berserk-2016",
 	"case-closed": "detective-conan",
 	"dgray-man": "d-gray-man",
+	"fatestay-night": "fatestay-night-unlimited-blade-works",
 	"haikyu": "",
 	"parasyte-the-maxim-": "parasyte-maxim",
 	"reborn": "katekyo-hitman-reborn",
+	"relife": "",
+	"shugo-chara": "",
 	"sword-art-online": ""
 };
 
 var animeName = $("meta[property='og:url']").attr("content").split("/")[3];
 
-// var animeName = $(function() {
-// 	name = $(".collection-carousel-media-link-current a").attr("href").split("/")[1];
-// 	if (name.length == 0) {
-// 		name = 
-// 	}
-// };
 var fillerList = $(function() {
 	// set animeName to appropriate animefillerlist name lookup
 	if (animeName in knownIssues) {
@@ -76,15 +75,15 @@ var fillerList = $(function() {
 });
 
 $(function() {
-	if (fillerList.length > 0) {
+	if ($(fillerList).find(".node-anime")[0]) {
 		// episode list page
 		$("a.portrait-element.block-link.titlefix.episode").each(function() {
-			var epNum = $(this).attr("title").split(" ").pop();
+			var epNum = $(this).attr("href").split("/")[2].split("-")[1];
 			var epType = $(fillerList).find("#eps-" + epNum + " .Type span").text();
 
 			// insert div and span for filler tag
-			$(this).prepend(getFillerTag(epType));
-		})
+			$(this).append(getFillerTag(epType));
+		});
 
 		// watch episode page
 		$("img.mug").each(function() {
@@ -98,9 +97,9 @@ $(function() {
 				$(".collection-carousel").attr("style", "height: 125px");
 				$(".collection-carousel-contents").attr("style", "height: 125px");
 			}
-			
+
 			// insert div and span for filler tag
-			$(this).before(getFillerTag(epType));	
+			$(this).after(getFillerTag(epType));	
 		});
 			// $.get( "http://www.animefillerlist.com/shows/" + animeName , function(data) {
 			// 	console.log($(data).find("#eps-" + epNum + " .Type span").text() + ", " + epNum);
