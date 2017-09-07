@@ -86,7 +86,30 @@ $(function() {
 		});
 
 		// watch episode page
-		$("img.mug").each(function() {
+		updateCarousel();
+	}
+});
+
+// update left and right of carousel view
+$(".collection-carousel-arrow").click(function() {
+	setTimeout(function() {updateCarousel()}, 1000);
+});
+
+// // update season dropdown view when opened
+// $(".season-dropdown").click(function() {
+
+// })
+
+// function updateSeason() {
+// 	// if season has season-dropdown, check if open. If true, then update with filler tag. 
+// 	// on click, wait and if open then update
+// }
+
+function updateCarousel() {
+	$("img.mug").each(function() {
+		// if the episode doesn't already have a filler tag
+		// then update that!!
+		if (!($(this).next(".filler-tag").length)) {
 			// pop episode numner from carousel image alt attribute
 			// find episode type from animefillerlist
 			var epNum = $(this).attr("alt").split(" ").pop();
@@ -99,17 +122,10 @@ $(function() {
 			}
 
 			// insert div and span for filler tag
-			$(this).after(getFillerTag(epType));	
-		});
-			// $.get( "http://www.animefillerlist.com/shows/" + animeName , function(data) {
-			// 	console.log($(data).find("#eps-" + epNum + " .Type span").text() + ", " + epNum);
-			// });
-		// // INSERTS FILLER TYPE INTO FILLER TAG SPAN -> THIS GOES AFTER SPAN CREATED
-		// if (type.length > 0) {
-		// 	$(".filler-tag span").text(type);
-		// }
-	}
-});
+			$(this).after(getFillerTag(epType));
+		}	
+	});
+}
 
 function getFillerTag(epType) {
 	var fillerTag;
