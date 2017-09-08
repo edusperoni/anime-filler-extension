@@ -68,22 +68,18 @@ var fillerList = $(function() {
 	$.ajax({
 		    async: false,
 		    type: 'GET',
-		    url: "http://www.animefillerlist.com/shows/" + animeName,
+		    url: "https://www.animefillerlist.com/shows/" + animeName,
 		    success: function(data) {
 		        fillerList = data;
     	}});
 });
 
+// main function
 $(function() {
 	if ($(fillerList).find(".node-anime")[0]) {
 		// episode list page
-		$("a.portrait-element.block-link.titlefix.episode").each(function() {
-			var epNum = $(this).attr("href").split("/")[2].split("-")[1];
-			var epType = $(fillerList).find("#eps-" + epNum + " .Type span").text();
-
-			// insert div and span for filler tag
-			$(this).append(getFillerTag(epType));
-		});
+		updateSeason($(".season").first());
+		console.log(animeName);
 
 		// watch episode page
 		updateCarousel();
@@ -95,16 +91,28 @@ $(".collection-carousel-arrow").click(function() {
 	setTimeout(function() {updateCarousel()}, 1000);
 });
 
-// // update season dropdown view when opened
-// $(".season-dropdown").click(function() {
+// update season dropdown view when opened
+$(".season-dropdown").click(function() {
+		var seasonClicked = $(event.currentTarget).parent();
+		if (seasonClicked.find("a.open") && !(seasonClicked.hasClass("tag-view"))) {
+			updateSeason(seasonClicked);
+		}
+});
 
-// })
+// update episodes with filler tags under given parent object
+function updateSeason(parent) {
+	$(parent).addClass("tag-view");
+	// on click, if open then update
+	$(parent).find("a.portrait-element.block-link.titlefix.episode").each(function() {
+		var epNum = $(this).attr("href").split("/")[2].split("-")[1];
+		var epType = $(fillerList).find("#eps-" + epNum + " .Type span").text();
 
-// function updateSeason() {
-// 	// if season has season-dropdown, check if open. If true, then update with filler tag. 
-// 	// on click, wait and if open then update
-// }
+		// insert div and span for filler tag
+		$(this).append(getFillerTag(epType));
+	});
+}
 
+// update episodes with filler tags if not already in carousel
 function updateCarousel() {
 	$("img.mug").each(function() {
 		// if the episode doesn't already have a filler tag

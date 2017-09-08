@@ -6,18 +6,16 @@
 
 {
   "manifest_version": 2,
-  "name": "Anime Filler Labeler",
+  "name": "Crunchyroll Filler Labeler",
   "version": "0.1",
-  "background": {
-    "scripts": ["background.js"]
-  },
   "content_scripts": [
     {
       "matches": ["*://www.crunchyroll.com/*", "*://www.animefillerlist.com/shows/*"],
       "js": ["jquery-3.2.1.min.js", "content.js"]
     }
   ],
-  "browser_action": {
-    "default_icon": "icon.png"
-  }
+  "icons": { 
+    "16": "/icons/icon16.png",
+    "48": "/icons/icon48.png",
+    "128": "/icons/icon128.png" }
 }
