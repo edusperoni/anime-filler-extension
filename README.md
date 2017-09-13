@@ -8,7 +8,7 @@ A Chrome Extension that enables users to quickly identify which episodes in an a
 - Photoshop CS6
 - Git
 
-### Tasks
+### Updates
 - [x] Figure out how to inject html into Crunchyroll's webpage. 8/30/2017
 - [x] Pull data from external animefillerlist website. 8/31/2017
 - [x] Add filler lable to anime episode list view page (wwww.crunchyroll.com/anime-name). 9/1/2017
