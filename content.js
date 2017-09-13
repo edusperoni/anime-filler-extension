@@ -1,47 +1,3 @@
-/*
-CONTENT SCRIPTS
-- a js file that runs in context of webpage
-- content scripts injected after DOM loaded; no need to check if loaded
-
-BROWSER ACTION
-- icon added by extension; listen for clicks
-
-MESSAGE PASSING
-- content script grabs url of current page and background does smt with it
-- the scripts communicate in order to work together
-
-### JQUERY ###
-CSS SELECTORS
-- $(".class-name").children().attr("style", "color: red");
-- $("#id-name").find("a[href^="http://"]").attr(blah); -- find elements under id with a href start with  http://
-
-- children() -- select direct children
-- find("given") -- select given
-- parent() -- select parent directly above
-- parents() -- parents all through chain
-
-ATTRIBUTE SELECTORS
-- ^= begins with
-- $= ends with
-- *= at least one instance of 
-
-INSERT CONTENT
-- before
-- after
-- prepend
-- append
-*/
-
-// chrome.runtime.onMessage.addListener(
-//   function(request, sender, sendResponse) {
-//     if( request.message === "clicked_browser_action" ) {
-//       var firstHref = $("a[href^='http']").eq(0).attr("href");
-
-//       console.log(firstHref);
-//     }
-//     chrome.runtime.sendMessage({"message": "open_new_tab", "url": firstHref});
-//     }
-// );
 var knownIssues = {
 	"ace-attorney": "",
 	"assassination-classroom": "ansatsu,-kyoushitsu-assassination-classroom",
@@ -79,7 +35,6 @@ $(function() {
 	if ($(fillerList).find(".node-anime")[0]) {
 		// episode list page
 		updateSeason($(".season").first());
-		console.log(animeName);
 
 		// watch episode page
 		updateCarousel();
