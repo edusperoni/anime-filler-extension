@@ -24,7 +24,7 @@ var fillerList = $(function() {
 	$.ajax({
 		    async: false,
 		    type: 'GET',
-		    url: "https://www.animefillerlist.com/shows/" + animeName,
+		    url: "http://www.animefillerlist.com/shows/" + animeName,
 		    success: function(data) {
 		        fillerList = data;
     	}});
@@ -77,7 +77,7 @@ function updateCarousel() {
 			// find episode type from animefillerlist
 			var epNum = $(this).attr("alt").split(" ").pop();
 			var epType = $(fillerList).find("#eps-" + epNum + " .Type span").text();
-			
+
 			if (epType.length > 0) {
 				// adjust carousel height for tag
 				$(".collection-carousel").attr("style", "height: 125px");
@@ -86,7 +86,7 @@ function updateCarousel() {
 
 			// insert div and span for filler tag
 			$(this).after(getFillerTag(epType));
-		}	
+		}
 	});
 }
 
@@ -101,10 +101,10 @@ function getFillerTag(epType) {
 			fillerTag +="#91BD09"; // green
 		}
 		fillerTag +=";'><span style='font-size: 11px; color: white; text-transform: uppercase;'>" + epType + "</span></div>";
-	} 
+	}
 	else {
 		fillerTag = "<div class='empty-filler-tag' style='height: 16px;'></div>";
 	}
 
-	return fillerTag;	
+	return fillerTag;
 }
