@@ -14,5 +14,6 @@ A Chrome Extension that enables users to quickly identify which episodes in an a
 - [x] Add filler lable to anime episode list view page (wwww.crunchyroll.com/anime-name). 9/1/2017
 - [x] Add click event to update left and right page of episode carousel with filler label. 9/6/2017
 - [x] Improve load times on episode list view. 9/6/2017
+- [x] Publish extension to chrome store. 9/8/2017
 - [ ] Support for http://animefillerepisodes.com.
 - [ ] Maybe support for multiple pages on AFL referencing one Crunchyroll anime.

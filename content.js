@@ -43,7 +43,11 @@ $(function() {
 
 // update left and right of carousel view
 $(".collection-carousel-arrow").click(function() {
-	setTimeout(function() {updateCarousel()}, 1000);
+	setTimeout(function() {
+		if ($(fillerList).find(".node-anime")[0]) {
+			updateCarousel()
+		}
+	}, 1000);
 });
 
 // update season dropdown view when opened
@@ -103,7 +107,7 @@ function getFillerTag(epType) {
 		fillerTag +=";'><span style='font-size: 11px; color: white; text-transform: uppercase;'>" + epType + "</span></div>";
 	}
 	else {
-		fillerTag = "<div class='empty-filler-tag' style='height: 16px;'></div>";
+		fillerTag = "<div class='filler-tag' style='height: 16px;'></div>";
 	}
 
 	return fillerTag;
