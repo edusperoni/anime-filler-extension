@@ -29,8 +29,6 @@ var fillerList = $(function() {
 
                         // watch episode page
                         updateCarousel();
-
-                        console.log("success");
                 }
         })
 });
