@@ -21,25 +21,30 @@ var fillerList = $(function() {
 	if (animeName in knownIssues) {
 		animeName = knownIssues[animeName];
 	}
-	$.ajax({
-		    async: false,
-		    type: 'GET',
-		    url: "http://www.animefillerlist.com/shows/" + animeName,
-		    success: function(data) {
-		        fillerList = data;
-    	}});
+        $.get("http://www.animefillerlist.com/shows/" + animeName, function(data) {
+                fillerList = data;
+                if ($(fillerList).find(".node-anime")[0]) {
+                        // episode list page
+                        updateSeason($(".season").first());
+
+                        // watch episode page
+                        updateCarousel();
+
+                        console.log("success");
+                }
+        })
 });
 
 // main function
-$(function() {
-	if ($(fillerList).find(".node-anime")[0]) {
-		// episode list page
-		updateSeason($(".season").first());
+// $(function() {
+// 	if ($(fillerList).find(".node-anime")[0]) {
+// 		// episode list page
+// 		updateSeason($(".season").first());
 
-		// watch episode page
-		updateCarousel();
-	}
-});
+// 		// watch episode page
+// 		updateCarousel();
+// 	}
+// });
 
 // update left and right of carousel view
 $(".collection-carousel-arrow").click(function() {
@@ -65,6 +70,8 @@ function updateSeason(parent) {
 	$(parent).find("a.portrait-element.block-link.titlefix.episode").each(function() {
 		var epNum = $(this).attr("href").split("/")[2].split("-")[1];
 		var epType = $(fillerList).find("#eps-" + epNum + " .Type span").text();
+
+                console.log(epNum + " " + epType);
 
 		// insert div and span for filler tag
 		$(this).append(getFillerTag(epType));
