@@ -11,6 +11,7 @@ var knownIssues = {
 	"reborn": "katekyo-hitman-reborn",
 	"relife": "",
 	"shugo-chara": "",
+	"steinsgate-0": "slam-dunk",
 	"sword-art-online": ""
 };
 

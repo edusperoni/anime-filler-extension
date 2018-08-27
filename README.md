@@ -17,4 +17,4 @@ A Chrome Extension that enables users to quickly identify which episodes in an a
 - [x] Publish extension to chrome store. 9/8/2017
 - [x] Fix broken async call bug and released v1.0.0. 8/27/2018
 - [ ] Support for http://animefillerepisodes.com.
-- [ ] Maybe support for multiple pages on AFL referencing one Crunchyroll anime.
+- [ ] Maybe support for multiple pages on AFL referencing one Crunchyroll anime (multiple seasons).
