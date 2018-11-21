@@ -15,12 +15,20 @@ var knownIssues = {
 	"sword-art-online": ""
 };
 
+var knownEpOffsets = {
+	"fairy-tail": 175
+}
+
 var animeName = $("meta[property='og:url']").attr("content").split("/")[3];
+var epOffset = 0;
 
 var fillerList = $(function() {
 	// set animeName to appropriate animefillerlist name lookup
 	if (animeName in knownIssues) {
 		animeName = knownIssues[animeName];
+	}
+	if (animeName in knownEpOffsets) {
+		epOffset = knownEpOffsets[animeName];
 	}
         $.get("https://www.animefillerlist.com/shows/" + animeName, function(data) {
                 fillerList = data;
@@ -57,6 +65,10 @@ function updateSeason(parent) {
 	// on click, if open then update
 	$(parent).find("a.portrait-element.block-link.titlefix.episode").each(function() {
 		var epNum = $(this).attr("href").split("/")[2].split("-")[1];
+		// if is int, add the offset
+		if (!isNaN(parseInt(epNum))) {
+			epNum = parseInt(epNum) + epOffset;
+		}
 		var epType = $(fillerList).find("#eps-" + epNum + " .Type span").text();
 
 		// insert div and span for filler tag
@@ -73,6 +85,10 @@ function updateCarousel() {
 			// pop episode numner from carousel image alt attribute
 			// find episode type from animefillerlist
 			var epNum = $(this).attr("alt").split(" ").pop();
+			// if is int, add the offset
+			if (!isNaN(parseInt(epNum))) {
+				epNum = parseInt(epNum) + epOffset;
+			}
 			var epType = $(fillerList).find("#eps-" + epNum + " .Type span").text();
 
 			if (epType.length > 0) {
