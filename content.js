@@ -17,7 +17,7 @@ var knownIssues = {
 
 var knownEpOffsets = {
 	"fairy-tail": 175
-}
+};
 
 var animeName = $("meta[property='og:url']").attr("content").split("/")[3];
 var epOffset = 0;
