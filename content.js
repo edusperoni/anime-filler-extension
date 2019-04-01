@@ -16,13 +16,15 @@ var knownIssues = {
 };
 
 var animeName = $("meta[property='og:url']").attr("content").split("/")[3];
+var fillerListUrl = "https://www.animefillerlist.com/shows/" + animeName
 
 var fillerList = $(function() {
 	// set animeName to appropriate animefillerlist name lookup
 	if (animeName in knownIssues) {
 		animeName = knownIssues[animeName];
 	}
-        $.get("https://www.animefillerlist.com/shows/" + animeName, function(data) {
+	// workaround for CORS
+        $.get(`${'https://cors-anywhere.herokuapp.com/'}` + fillerListUrl, function(data) {
                 fillerList = data;
                 if ($(fillerList).find(".node-anime")[0]) {
                         // episode list page
