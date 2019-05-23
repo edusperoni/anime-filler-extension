@@ -61,7 +61,6 @@ function updateSeason(parent) {
 	$(parent).find("a.portrait-element.block-link.titlefix.episode").each(function() {
 		var tagHref = $(this).attr("href").split("/")
 		var epNum = (tagHref[1].length == 2 ? tagHref[3] : tagHref[2]).split("-")[1];
-		console.log(epNum);
 		var epType = $(fillerList).find("#eps-" + epNum + " .Type span").text();
 
 		// insert div and span for filler tag
