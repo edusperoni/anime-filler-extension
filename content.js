@@ -77,11 +77,9 @@ function updateCarousel() {
 			var epNum = $(this).attr("alt").split(" ").pop();
 			var epType = $(fillerList).find("#eps-" + epNum + " .Type span").text();
 
-			if (epType.length > 0) {
-				// adjust carousel height for tag
-				$(".collection-carousel").attr("style", "height: 125px");
-				$(".collection-carousel-contents").attr("style", "height: 125px");
-			}
+			// adjust carousel height for tag
+			$(".collection-carousel").attr("style", "height: 125px");
+			$(".collection-carousel-contents").attr("style", "height: 125px");
 
 			// insert div and span for filler tag
 			$(this).after(getFillerTag(epType));
