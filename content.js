@@ -24,16 +24,16 @@ var fillerList = $(function() {
 		animeName = knownIssues[animeName];
 	}
 	// workaround for CORS
-        $.get(`${'https://cors-anywhere.herokuapp.com/'}` + fillerListUrl, function(data) {
-                fillerList = data;
-                if ($(fillerList).find(".node-anime")[0]) {
-                        // episode list page
-                        updateSeason($(".season").first());
+    $.get(`${'https://cors-anywhere.herokuapp.com/'}` + fillerListUrl, function(data) {
+            fillerList = data;
+            if ($(fillerList).find(".node-anime")[0]) {
+                    // episode list page
+                    updateSeason($(".season").first());
 
-                        // watch episode page
-                        updateCarousel();
-                }
-        })
+                    // watch episode page
+                    updateCarousel();
+            }
+    })
 });
 
 // update left and right of carousel view
@@ -88,19 +88,25 @@ function updateCarousel() {
 }
 
 function getFillerTag(epType) {
-	var fillerTag;
+	var fillerTag = "<div class='filler-tag' style='height: 16px;'></div>";
+	
 	if (epType.length > 0) {
-		fillerTag = "<div class='filler-tag' style='width: 100%; text-align: center; background-color: ";
-		if(epType == "Filler" || epType == "Mostly Filler") {
-			fillerTag += "#A14A40"; // red
+		var backgroundColor = "#91BD09"; // green
+		var fontSize = 11;
+
+		if (epType == "Filler" || epType == "Mostly Filler") {
+			backgroundColor = "#A14A40"; // red
 		}
-		else {
-			fillerTag +="#91BD09"; // green
+		else if (epType.length > 12) {
+			fontSize = 9;
 		}
-		fillerTag +=";'><span style='font-size: 11px; color: white; text-transform: uppercase;'>" + epType + "</span></div>";
-	}
-	else {
-		fillerTag = "<div class='filler-tag' style='height: 16px;'></div>";
+
+		fillerTag = "<div class='filler-tag' style='width: 100%; position: relative; " +
+					"height: 16px; background-color: " + backgroundColor + ";'><span " +
+					"style='position: absolute; top: 50%; width: 100%; text-align: " +
+					"center; transform: translate(0, -50%); font-size: " + fontSize + 
+					"px; color: white; text-transform: uppercase;'>" + epType + 
+					"</span></div>";
 	}
 
 	return fillerTag;
