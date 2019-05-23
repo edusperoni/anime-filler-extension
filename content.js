@@ -15,7 +15,8 @@ var knownIssues = {
 	"sword-art-online": ""
 };
 
-var animeName = $("meta[property='og:url']").attr("content").split("/")[3];
+var url = $("meta[property='og:url']").attr("content").split("/");
+var animeName = url[3].length == 2 ? url[4] : url[3]; // workaround for region codes
 var fillerListUrl = "https://www.animefillerlist.com/shows/" + animeName
 
 var fillerList = $(function() {
@@ -58,7 +59,9 @@ function updateSeason(parent) {
 	$(parent).addClass("tag-view");
 	// on click, if open then update
 	$(parent).find("a.portrait-element.block-link.titlefix.episode").each(function() {
-		var epNum = $(this).attr("href").split("/")[2].split("-")[1];
+		var tagHref = $(this).attr("href").split("/")
+		var epNum = (tagHref[1].length == 2 ? tagHref[3] : tagHref[2]).split("-")[1];
+		console.log(epNum);
 		var epType = $(fillerList).find("#eps-" + epNum + " .Type span").text();
 
 		// insert div and span for filler tag
