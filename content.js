@@ -16,7 +16,8 @@ var knownIssues = {
 	"the-rising-of-the-shield-hero": "rising-shield-hero"
 };
 
-var animeName = $("meta[property='og:url']").attr("content").split("/")[3];
+var url = $("meta[property='og:url']").attr("content").split("/");
+var animeName = url[3].length == 2 ? url[4] : url[3]; // workaround for region codes
 var fillerListUrl = "https://www.animefillerlist.com/shows/" + animeName
 var fillerList = $(function() {
 	animeName = (animeName in knownIssues) ? knownIssues[animeName] : animeName;
@@ -43,11 +44,11 @@ function updateSeason(view) {
 			$(this).append(getFillerTag(epNum));
 	});
 }
+
 function updateCarousel() {
 	$("img.mug").each(function() {
 		if (!($(this).next(".filler-tag").length)) {
 			epNum = $(this).attr("alt").split(" ").pop();
-
 			$(this).after(getFillerTag(epNum));
 			if ($(this).next(".filler-tag").length) { // update height
 				$(".collection-carousel").attr("style", "height: 125px");
