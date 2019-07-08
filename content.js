@@ -12,98 +12,77 @@ var knownIssues = {
 	"relife": "",
 	"shugo-chara": "",
 	"steinsgate-0": "slam-dunk",
-	"sword-art-online": ""
+	"sword-art-online": "",
+	"the-rising-of-the-shield-hero": "rising-shield-hero"
 };
 
 var animeName = $("meta[property='og:url']").attr("content").split("/")[3];
 var fillerListUrl = "https://www.animefillerlist.com/shows/" + animeName
-
 var fillerList = $(function() {
-	// set animeName to appropriate animefillerlist name lookup
+	animeName = (animeName in knownIssues) ? knownIssues[animeName] : animeName;
 	if (animeName in knownIssues) {
 		animeName = knownIssues[animeName];
 	}
 	// workaround for CORS
-        $.get(`${'https://cors-anywhere.herokuapp.com/'}` + fillerListUrl, function(data) {
-                fillerList = data;
-                if ($(fillerList).find(".node-anime")[0]) {
-                        // episode list page
-                        updateSeason($(".season").first());
-
-                        // watch episode page
-                        updateCarousel();
-                }
-        })
-});
-
-// update left and right of carousel view
-$(".collection-carousel-arrow").click(function() {
-	setTimeout(function() {
-		if ($(fillerList).find(".node-anime")[0]) {
-			updateCarousel()
+	$.get(`${'https://cors-anywhere.herokuapp.com/'}` + fillerListUrl,
+		function(data) {
+			fillerList = data;
+			if ($(fillerList).find(".node-anime")[0]) {
+				updateSeason($(".season").first());
+				updateCarousel();
+			}
 		}
-	}, 1000);
+	);
 });
 
-// update season dropdown view when opened
-$(".season-dropdown").click(function() {
-		var seasonClicked = $(event.currentTarget).parent();
-		if (seasonClicked.find("a.open") && !(seasonClicked.hasClass("tag-view"))) {
-			updateSeason(seasonClicked);
-		}
-});
-
-// update episodes with filler tags under given parent object
-function updateSeason(parent) {
-	$(parent).addClass("tag-view");
-	// on click, if open then update
-	$(parent).find("a.portrait-element.block-link.titlefix.episode").each(function() {
-		var epNum = $(this).attr("href").split("/")[2].split("-")[1];
-		var epType = $(fillerList).find("#eps-" + epNum + " .Type span").text();
-
-		// insert div and span for filler tag
-		$(this).append(getFillerTag(epType));
+function updateSeason(view) {
+	$(view).addClass("tag-view");
+	$(view).find("a.portrait-element.block-link.titlefix.episode")
+		.each(function() {
+			epNum = $(this).attr("href").split("/")[2].split("-")[1];
+			$(this).append(getFillerTag(epNum));
 	});
 }
-
-// update episodes with filler tags if not already in carousel
 function updateCarousel() {
 	$("img.mug").each(function() {
-		// if the episode doesn't already have a filler tag
-		// then update that!!
 		if (!($(this).next(".filler-tag").length)) {
-			// pop episode numner from carousel image alt attribute
-			// find episode type from animefillerlist
-			var epNum = $(this).attr("alt").split(" ").pop();
-			var epType = $(fillerList).find("#eps-" + epNum + " .Type span").text();
+			epNum = $(this).attr("alt").split(" ").pop();
 
-			if (epType.length > 0) {
-				// adjust carousel height for tag
+			$(this).after(getFillerTag(epNum));
+			if ($(this).next(".filler-tag").length) { // update height
 				$(".collection-carousel").attr("style", "height: 125px");
 				$(".collection-carousel-contents").attr("style", "height: 125px");
 			}
-
-			// insert div and span for filler tag
-			$(this).after(getFillerTag(epType));
 		}
 	});
 }
 
-function getFillerTag(epType) {
-	var fillerTag;
+function getFillerTag(epNum) {
+	var epType = $(fillerList).find("#eps-" + epNum + " .Type span").text();
+	var fillerTag = "<div class='filler-tag' style='height: 16px;'></div>";
 	if (epType.length > 0) {
-		fillerTag = "<div class='filler-tag' style='width: 100%; text-align: center; background-color: ";
-		if(epType == "Filler" || epType == "Mostly Filler") {
-			fillerTag += "#A14A40"; // red
-		}
-		else {
-			fillerTag +="#91BD09"; // green
-		}
-		fillerTag +=";'><span style='font-size: 11px; color: white; text-transform: uppercase;'>" + epType + "</span></div>";
-	}
-	else {
-		fillerTag = "<div class='filler-tag' style='height: 16px;'></div>";
+		var tagColor = epType.includes("Filler") ? "#A14A40" : "#91BD09";
+
+		fillerTag = `<div class='filler-tag' style='width: 100%; text-align: \
+		center; background-color: ${tagColor};'><span style='font-size: 11px; \
+		color: white; text-transform: uppercase;'>${epType}</span></div>`;
 	}
 
 	return fillerTag;
 }
+
+$(".collection-carousel-arrow").click(function() {
+	var delay = 500; // buffer for carousel loading next section
+	setTimeout(function() {
+		if ($(fillerList).find(".node-anime")[0]) {
+			updateCarousel();
+		}
+	}, delay);
+});
+
+$(".season-dropdown").click(function() {
+	var seasonView = $(event.currentTarget).parent();
+	if (seasonView.find("a.open") && !(seasonView.hasClass("tag-view"))) {
+		updateSeason(seasonView);
+	}
+});
