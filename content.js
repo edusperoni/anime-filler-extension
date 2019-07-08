@@ -17,13 +17,10 @@ var knownIssues = {
 };
 
 var url = $("meta[property='og:url']").attr("content").split("/");
-var animeName = url[3].length == 2 ? url[4] : url[3]; // workaround for region codes
-var fillerListUrl = "https://www.animefillerlist.com/shows/" + animeName
+var animeName = url[3].length == 2 ? url[4] : url[3]; // workaround region codes
+var fillerListUrl = "https://www.animefillerlist.com/shows/" + animeName;
 var fillerList = $(function() {
 	animeName = (animeName in knownIssues) ? knownIssues[animeName] : animeName;
-	if (animeName in knownIssues) {
-		animeName = knownIssues[animeName];
-	}
 	// workaround for CORS
 	$.get(`${'https://cors-anywhere.herokuapp.com/'}` + fillerListUrl,
 		function(data) {
@@ -65,7 +62,7 @@ function getFillerTag(epNum) {
 		var tagColor = epType.includes("Filler") ? "#A14A40" : "#91BD09";
 
 		fillerTag = `<div class='filler-tag' style='width: 100%; text-align: \
-		center; background-color: ${tagColor};'><span style='font-size: 11px; \
+		center; background-color: ${tagColor};'><span style='font-size: .75em; \
 		color: white; text-transform: uppercase;'>${epType}</span></div>`;
 	}
 
